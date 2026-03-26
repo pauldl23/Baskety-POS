@@ -12,7 +12,7 @@ class InventoryDashboardView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     model = Product
     template_name = 'inventory/dashboard.html'
     context_object_name = 'products'
-    paginate_by = 50
+    # paginate_by = 50
 
     def get_queryset(self):
         queryset = Product.objects.all().select_related('category')

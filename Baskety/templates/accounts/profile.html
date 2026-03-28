@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50 pb-12 font-sans">
+    <!-- Header Section -->
+    <div class="relative w-full h-48 bg-gradient-to-r from-[#4CAF50] to-emerald-600 overflow-hidden shadow-lg">
+        <div class="absolute inset-0 opacity-20">
+            <svg width="100%" height="100%">
+                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-16">
+            <h1 class="text-4xl font-black text-white tracking-tight drop-shadow-md">My Profile</h1>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Profile Card -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] p-8 border border-gray-100 flex flex-col items-center text-center">
+                    <!-- Large Avatar -->
+                    <div class="relative mb-6">
+                        <div class="w-32 h-32 rounded-[2.5rem] bg-gradient-to-br from-[#4CAF50] to-emerald-600 flex items-center justify-center text-white text-5xl font-black shadow-2xl shadow-green-200 border-4 border-white">
+                            {{ user.username|slice:":1"|upper }}
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-2xl shadow-lg border border-gray-100 flex items-center justify-center text-green-600">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-black text-gray-900 tracking-tight">{{ user.get_full_name|default:user.username }}</h2>
+                    <p class="text-gray-400 font-bold uppercase tracking-widest text-xs mt-1">@{{ user.username }}</p>
+                    
+                    <!-- Role Badge -->
+                    <div class="mt-4 px-4 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-md shadow-green-200">
+                        {{ user.role|upper }}
+                    </div>
+
+                    <div class="w-full mt-8 border-t border-gray-50 pt-8 space-y-4">
+                        <div class="flex items-center space-x-4 px-4">
+                            <div class="p-2.5 rounded-xl bg-gray-50 text-gray-400">
+                                <i data-lucide="mail" class="w-5 h-5"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Email Address</p>
+                                <p class="text-sm font-bold text-gray-800 truncate max-w-[180px]">{{ user.email|default:"Not set" }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 px-4">
+                            <div class="p-2.5 rounded-xl bg-gray-50 text-gray-400">
+                                <i data-lucide="phone" class="w-5 h-5"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Phone Number</p>
+                                <p class="text-sm font-bold text-gray-800">{{ user.phone_number|default:"Not set" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Info Sections -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Personal Information -->
+                <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100">
+                    <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-white">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 rounded-xl bg-green-50 text-green-600">
+                                <i data-lucide="user" class="w-5 h-5 font-bold"></i>
+                            </div>
+                            <h3 class="text-lg font-black text-gray-900 tracking-tight">Personal Information</h3>
+                        </div>
+                        <a href="{% url 'profile_edit' %}" class="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gray-900 text-white text-xs font-bold hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            <span>Edit Profile</span>
+                        </a>
+                    </div>
+                    <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">First Name</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-800">{{ user.first_name|default:"—" }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Last Name</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-800">{{ user.last_name|default:"—" }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Username</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-lg inline-block">{{ user.username }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Email Address</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-800">{{ user.email|default:"—" }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100">
+                    <div class="px-8 py-6 border-b border-gray-50 flex items-center bg-white space-x-3">
+                        <div class="p-2 rounded-xl bg-blue-50 text-blue-600">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-black text-gray-900 tracking-tight">Account Information</h3>
+                    </div>
+                    <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Role</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-800 capitalize">{{ user.role }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Account Status</label>
+                            <div class="mt-1.5 flex items-center space-x-2 text-green-600 font-bold">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Date Joined</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-800">{{ user.date_joined|date:"F d, Y" }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Last Login</label>
+                            <p class="mt-1.5 text-base font-bold text-gray-800">{{ user.last_login|date:"F d, Y H:i"|default:"First login session" }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100 ring-2 ring-transparent transition-all">
+                    <div class="px-8 py-6 border-b border-gray-50 flex items-center bg-white space-x-3">
+                        <div class="p-2 rounded-xl bg-red-50 text-red-600">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-black text-gray-900 tracking-tight">Security</h3>
+                    </div>
+                    <div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">Password</p>
+                            <p class="text-xs text-gray-400 mt-1 font-medium">Keep your account secure by updating your password regularly.</p>
+                        </div>
+                        <a href="{% url 'change_password' %}" class="flex items-center justify-center space-x-2 px-6 py-3 rounded-2xl border border-gray-200 text-gray-700 text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition-all group">
+                            <i data-lucide="key" class="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors"></i>
+                            <span>Update Password</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Background Pattern Definition -->
+<svg class="hidden">
+    <defs>
+        <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1" />
+        </pattern>
+    </defs>
+</svg>
+{% endblock %}

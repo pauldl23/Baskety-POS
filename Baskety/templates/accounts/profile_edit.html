@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50 pb-12 font-sans">
+    <!-- Header Section -->
+    <div class="relative w-full h-48 bg-gradient-to-r from-[#4CAF50] to-emerald-600 overflow-hidden shadow-lg">
+        <div class="absolute inset-0 opacity-20">
+            <svg width="100%" height="100%">
+                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+        </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-8">
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'profile' %}" class="p-2.5 rounded-2xl bg-white/20 hover:bg-white/30 text-white transition-all backdrop-blur-md border border-white/20">
+                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </a>
+                <h1 class="text-4xl font-black text-white tracking-tight drop-shadow-md">Edit Profile</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
+        <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100">
+            <div class="px-8 py-6 border-b border-gray-50 flex items-center bg-white space-x-3">
+                <div class="p-2 rounded-xl bg-green-50 text-green-600">
+                    <i data-lucide="user-edit" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-black text-gray-900 tracking-tight">Personal Details</h3>
+            </div>
+            
+            <form method="post" class="p-8 space-y-8">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label for="{{ form.first_name.id_for_label }}" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="space-y-2">
+                        <label for="{{ form.last_name.id_for_label }}" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="space-y-2">
+                        <label for="{{ form.email.id_for_label }}" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Email Address</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="space-y-2">
+                        <label for="{{ form.phone_number.id_for_label }}" class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Phone Number</label>
+                        {{ form.phone_number }}
+                    </div>
+                </div>
+
+                <div class="pt-8 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3 p-4 bg-gray-50 rounded-2xl border border-gray-100/50">
+                        <i data-lucide="info" class="w-5 h-5 text-gray-400"></i>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-tight">
+                            Note: Your username and role <br> remain system-managed.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-4 w-full sm:w-auto">
+                        <a href="{% url 'profile' %}" class="px-6 py-4 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors">
+                            Cancel
+                        </a>
+                        <button type="submit" class="w-full sm:w-auto px-8 py-4 bg-[#4CAF50] hover:bg-[#43a047] text-white font-bold rounded-2xl shadow-lg shadow-green-600/20 transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center space-x-2">
+                            <i data-lucide="save" class="w-5 h-5"></i>
+                            <span>Save Changes</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Background Pattern Definition -->
+<svg class="hidden">
+    <defs>
+        <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1" />
+        </pattern>
+    </defs>
+</svg>
+{% endblock %}

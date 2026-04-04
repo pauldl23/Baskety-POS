@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt #{{ transaction.id }}</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #000;
+            background-color: #fff;
+            margin: 0;
+            padding: 20px;
+            width: 80mm; /* Standard thermal printer width */
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0 0 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .header p {
+            margin: 0;
+            font-size: 12px;
+        }
+        .divider {
+            border-top: 1px dashed #000;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 5px 0;
+            font-size: 12px;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .totals {
+            margin-top: 10px;
+        }
+        .totals .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .totals .grand-total {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .no-print {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        .no-print button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+            font-weight: bold;
+        }
+        .no-print button.primary {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        /* Push the receipt down so the absolute bar doesn't cover it */
+        .receipt-container {
+            margin-top: 60px;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .receipt-container {
+                margin-top: 0;
+            }
+            @page {
+                size: 80mm auto; /* auto height for receipt printers */
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <button class="primary" onclick="window.print()">Print Receipt</button>
+        <button onclick="saveReceipt()">Save as PDF</button>
+        <button onclick="window.close()">Close</button>
+    </div>
+
+    <div class="receipt-container">
+    <div class="header">
+        <h1>Baskety</h1>
+        <p>123 Main Street</p>
+        <p>Manila, Philippines</p>
+        <p>Tel: +63 912 345 6789</p>
+        <div class="divider"></div>
+        <p style="text-align: left;">Receipt #: {{ transaction.id }}<br>
+           Date: {{ transaction.created_at|date:"M d, Y h:i A" }}<br>
+           Cashier: {% if transaction.cashier %}{{ transaction.cashier.username }}{% else %}Guest{% endif %}
+        </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in transaction.items.all %}
+            <tr>
+                <td>{{ item.product_name }}</td>
+                <td class="text-right">{{ item.quantity }}</td>
+                <td class="text-right">₱{{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="divider"></div>
+
+    <div class="totals">
+        <div class="row">
+            <span>Tax</span>
+            <span>₱{{ transaction.tax_amount }}</span>
+        </div>
+        <div class="divider"></div>
+        <div class="row grand-total">
+            <span>Total Amount</span>
+            <span>₱{{ transaction.total_amount }}</span>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <span>Payment ({{ transaction.get_payment_method_display }})</span>
+            <span>₱{{ transaction.amount_paid }}</span>
+        </div>
+        <div class="row">
+            <span>Change</span>
+            <span>₱{{ transaction.change_given }}</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for shopping with us!</p>
+        <p>Please come again.</p>
+    </div>
+    </div> <!-- end receipt-container -->
+
+    <script>
+        function saveReceipt() {
+            alert("To save this receipt as a PDF, the browser's print menu will now open. Please change the 'Destination' or 'Printer' to 'Save as PDF'.");
+            window.print();
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 import json
 from .models import Transaction, TransactionItem, Slide
@@ -93,3 +94,8 @@ def process_checkout(request):
             return JsonResponse({'success': False, 'message': str(e)})
             
     return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+@login_required
+def receipt_view(request, txn_id):
+    transaction = get_object_or_404(Transaction, id=txn_id)
+    return render(request, 'pos/receipt.html', {'transaction': transaction})

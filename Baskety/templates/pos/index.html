@@ -80,9 +80,9 @@
                                 <i data-lucide="search"
                                     class="w-5 h-5 text-gray-400 group-focus-within:text-[#4CAF50] transition-colors"></i>
                             </div>
-                            <input type="text" x-model="searchQuery" @keydown.window.prevent.f2="$el.focus()"
+                            <input type="text" x-model="searchQuery" @keydown.window.prevent.f2="$el.focus()" @keydown.enter="processSearchInput()"
                                 class="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#4CAF50]/20 focus:border-[#4CAF50] transition-all sm:text-sm"
-                                placeholder="Search products (Press F2)">
+                                placeholder="Search by name, or type/scan SKU and press Enter (F2)">
                         </div>
                         <button @click="startScanner()" title="Scan Barcode"
                             class="flex-shrink-0 px-4 py-3 bg-[#4CAF50]/10 text-[#4CAF50] hover:bg-[#4CAF50] hover:text-white rounded-xl transition-all shadow-sm border border-[#4CAF50]/20 flex items-center justify-center group-hover:shadow-md">
@@ -174,13 +174,20 @@
              class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm">
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative flex flex-col" @click.away="stopScanner()">
                 <!-- Header -->
-                <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-white">
-                    <h3 class="text-lg font-bold text-gray-800 flex items-center">
-                        <i data-lucide="scan" class="w-5 h-5 mr-2 text-[#4CAF50]"></i> Scan Barcode
+                <div class="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white gap-3">
+                    <h3 class="text-lg font-bold text-gray-800 flex items-center shrink-0">
+                        <i data-lucide="scan" class="w-5 h-5 mr-2 text-[#4CAF50]"></i> Scan
                     </h3>
-                    <button @click="stopScanner()" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
+                    <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                        <select x-model="selectedCamera" @change="switchCamera()" x-show="cameras.length > 0" class="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 flex-1 sm:w-48 text-ellipsis overflow-hidden focus:ring-[#4CAF50] focus:border-[#4CAF50]">
+                            <template x-for="cam in cameras" :key="cam.id">
+                                <option :value="cam.id" x-text="cam.label || 'Camera ' + cam.id"></option>
+                            </template>
+                        </select>
+                        <button @click="stopScanner()" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-gray-100 flex items-center justify-center shrink-0">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
                 </div>
                 <!-- Scanner Viewport -->
                 <div class="p-0 bg-gray-100 w-full relative min-h-[350px] flex flex-col items-center justify-center overflow-hidden">
@@ -344,6 +351,24 @@
                 });
             },
 
+            processSearchInput() {
+                const query = this.searchQuery.trim().toLowerCase();
+                if (!query) return;
+
+                // Check for exact SKU match first
+                const exactMatch = this.products.find(p => p.sku.toLowerCase() === query);
+                
+                if (exactMatch) {
+                    this.addToCart(exactMatch);
+                    this.searchQuery = ''; // Clear the input so they can scan the next item
+                }
+                // Optional: if tracking exact matches wasn't found but there's strictly 1 matched result
+                else if (this.filteredProducts.length === 1) {
+                    this.addToCart(this.filteredProducts[0]);
+                    this.searchQuery = '';
+                }
+            },
+
             addToCart(product) {
                 if (product.stock <= 0) return; // Prevent adding if OOS
 
@@ -382,126 +407,174 @@
             },
 
             startScanner() {
+                if (this.isScanning) return; // Prevent double clicks
                 this.isScanning = true;
+                this.cameras = [];
                 this.$nextTick(() => {
-                    // Initialize the scanner on the 'reader' div
-                    this.html5QrcodeScanner = new Html5Qrcode("reader");
-                    
-                    // Throttling logic so it doesn't add the same item 10 times in 1 second
-                    let lastScannedCode = null;
-                    let lastScanTime = 0;
-
-                    const html5QrCodeMethod = (decodedText, decodedResult) => {
-                        const now = Date.now();
-                        // Prevent scanning same item rapidly within 2 seconds
-                        if (decodedText === lastScannedCode && (now - lastScanTime) < 2000) {
-                            return; 
-                        }
-                        
-                        lastScannedCode = decodedText;
-                        lastScanTime = now;
-
-                        // Play a tiny beep sound
-                        try {
-                            const context = new (window.AudioContext || window.webkitAudioContext)();
-                            const oscillator = context.createOscillator();
-                            const gainNode = context.createGain();
-                            oscillator.connect(gainNode);
-                            gainNode.connect(context.destination);
-                            oscillator.type = "sine";
-                            oscillator.frequency.value = 800;
-                            gainNode.gain.setValueAtTime(0.1, context.currentTime);
-                            
-                            oscillator.start();
-                            setTimeout(() => oscillator.stop(), 100);
-                        } catch (e) {}
-
-                        // Find Product by SKU
-                        const match = this.products.find(p => p.sku === decodedText);
-                        
-                        // Need to manually re-init lucide icons on dynamically created objects if we used them in toasts, but standard css is fine
-                        if (match) {
-                            this.addToCart(match);
-                            
-                            // Visual feedback toast
-                            let toast = document.createElement("div");
-                            toast.innerText = `Added: ${match.name}`;
-                            toast.className = "fixed bottom-[5%] left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-5 py-3 rounded-full shadow-xl z-[100] font-bold text-sm transition-all duration-300 opacity-0 translate-y-4";
-                            document.body.appendChild(toast);
-                            
-                            requestAnimationFrame(() => {
-                                toast.classList.remove("opacity-0", "translate-y-4");
-                                toast.classList.add("opacity-100", "translate-y-0");
-                            });
-                            
-                            setTimeout(() => {
-                                toast.classList.remove("opacity-100", "translate-y-0");
-                                toast.classList.add("opacity-0", "translate-y-4");
-                                setTimeout(() => toast.remove(), 300);
-                            }, 1500);
-
+                    Html5Qrcode.getCameras().then(devices => {
+                        if (devices && devices.length > 0) {
+                            this.cameras = devices;
+                            this.selectedCamera = devices[0].id; // Default to first available
+                            // Find the rear facing camera if possible safely
+                            for(let i=0; i<devices.length; i++) {
+                                let label = (devices[i].label || '').toLowerCase();
+                                if(label.includes('back') || label.includes('rear') || label.includes('environment')) {
+                                    this.selectedCamera = devices[i].id;
+                                    break;
+                                }
+                            }
+                            this.initScannerWithCamera(this.selectedCamera);
                         } else {
-                            // Alert not found
-                            let toast = document.createElement("div");
-                            toast.innerText = "Barcode not found: " + decodedText;
-                            toast.className = "fixed bottom-[5%] left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-5 py-3 rounded-full shadow-xl z-[100] font-bold text-sm transition-all duration-300 opacity-0 translate-y-4";
-                            document.body.appendChild(toast);
-                            
-                            requestAnimationFrame(() => {
-                                toast.classList.remove("opacity-0", "translate-y-4");
-                                toast.classList.add("opacity-100", "translate-y-0");
-                            });
-                            
-                            setTimeout(() => {
-                                toast.classList.remove("opacity-100", "translate-y-0");
-                                toast.classList.add("opacity-0", "translate-y-4");
-                                setTimeout(() => toast.remove(), 300);
-                            }, 2000);
-                        }
-                    };
-
-                    const config = { 
-                        fps: 10, 
-                        qrbox: { width: 250, height: 150 }, 
-                        aspectRatio: 1.0,
-                        disableFlip: false 
-                    };
-
-                    this.html5QrcodeScanner.start(
-                        { facingMode: "environment" }, 
-                        config, 
-                        html5QrCodeMethod,
-                        (errorMessage) => {
-                            // parse errors - ignore to not clutter console during scanning
-                        }
-                    ).then(() => {
-                        // After scanner starts, fix some internal styling issues of html5-qrcode
-                        const readerVideo = document.querySelector('#reader video');
-                        if (readerVideo) {
-                            readerVideo.style.objectFit = 'cover';
-                            readerVideo.style.borderRadius = '1rem';
+                            this.initScannerWithCamera({ facingMode: "environment" });
                         }
                     }).catch(err => {
-                        console.error("Camera start failed", err);
-                        alert("Camera access denied or failed. Please ensure you have granted camera permissions for this site.");
-                        this.stopScanner();
+                        // Fallback to environment facingMode request if getCameras fails
+                        this.initScannerWithCamera({ facingMode: "environment" });
                     });
+                });
+            },
+            
+            switchCamera() {
+                if (!this.html5QrcodeScanner) return;
+                
+                // We use a safe try-catch here if the library state throws on stop()
+                try {
+                    this.html5QrcodeScanner.stop().then(() => {
+                        this.html5QrcodeScanner.clear();
+                        this.html5QrcodeScanner = null;
+                        document.getElementById('reader').innerHTML = '';
+                        this.initScannerWithCamera(this.selectedCamera);
+                    }).catch(err => {
+                        // If stop fails, force recreation anyway
+                        this.html5QrcodeScanner = null;
+                        document.getElementById('reader').innerHTML = '';
+                        this.initScannerWithCamera(this.selectedCamera);
+                    });
+                } catch(e) {
+                    this.html5QrcodeScanner = null;
+                    document.getElementById('reader').innerHTML = '';
+                    this.initScannerWithCamera(this.selectedCamera);
+                }
+            },
+            
+            initScannerWithCamera(cameraConfig) {
+                this.html5QrcodeScanner = new Html5Qrcode("reader");
+                
+                let lastScannedCode = null;
+                let lastScanTime = 0;
+
+                const html5QrCodeMethod = (decodedText, decodedResult) => {
+                    const now = Date.now();
+                    if (decodedText === lastScannedCode && (now - lastScanTime) < 2000) {
+                        return; 
+                    }
+                    lastScannedCode = decodedText;
+                    lastScanTime = now;
+
+                    try {
+                        const context = new (window.AudioContext || window.webkitAudioContext)();
+                        const oscillator = context.createOscillator();
+                        const gainNode = context.createGain();
+                        oscillator.connect(gainNode);
+                        gainNode.connect(context.destination);
+                        oscillator.type = "sine";
+                        oscillator.frequency.value = 800;
+                        gainNode.gain.setValueAtTime(0.1, context.currentTime);
+                        oscillator.start();
+                        setTimeout(() => oscillator.stop(), 100);
+                    } catch (e) {}
+
+                    const match = this.products.find(p => p.sku === decodedText);
+                    
+                    if (match) {
+                        this.addToCart(match);
+                        let toast = document.createElement("div");
+                        toast.innerText = `Added: ${match.name}`;
+                        toast.className = "fixed bottom-[5%] left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-5 py-3 rounded-full shadow-xl z-[100] font-bold text-sm transition-all duration-300 opacity-0 translate-y-4";
+                        document.body.appendChild(toast);
+                        
+                        requestAnimationFrame(() => {
+                            toast.classList.remove("opacity-0", "translate-y-4");
+                            toast.classList.add("opacity-100", "translate-y-0");
+                        });
+                        
+                        setTimeout(() => {
+                            toast.classList.remove("opacity-100", "translate-y-0");
+                            toast.classList.add("opacity-0", "translate-y-4");
+                            setTimeout(() => toast.remove(), 300);
+                        }, 1500);
+
+                    } else {
+                        let toast = document.createElement("div");
+                        toast.innerText = "Barcode not found: " + decodedText;
+                        toast.className = "fixed bottom-[5%] left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-5 py-3 rounded-full shadow-xl z-[100] font-bold text-sm transition-all duration-300 opacity-0 translate-y-4";
+                        document.body.appendChild(toast);
+                        
+                        requestAnimationFrame(() => {
+                            toast.classList.remove("opacity-0", "translate-y-4");
+                            toast.classList.add("opacity-100", "translate-y-0");
+                        });
+                        
+                        setTimeout(() => {
+                            toast.classList.remove("opacity-100", "translate-y-0");
+                            toast.classList.add("opacity-0", "translate-y-4");
+                            setTimeout(() => toast.remove(), 300);
+                        }, 2000);
+                    }
+                };
+
+                const config = { 
+                    fps: 15, // A lower FPS prevents frame-queueing lag, giving the parser enough CPU time per frame
+                    useBarCodeDetectorIfSupported: true, 
+                    qrbox: { width: 250, height: 100 }, 
+                    disableFlip: false,
+                    // Strip out computationally heavy 2D formats (like PDF417) to drastically speed up processing
+                    formatsToSupport: [
+                        Html5QrcodeSupportedFormats.CODE_128,
+                        Html5QrcodeSupportedFormats.UPC_A,
+                        Html5QrcodeSupportedFormats.UPC_E,
+                        Html5QrcodeSupportedFormats.EAN_13,
+                        Html5QrcodeSupportedFormats.EAN_8,
+                        Html5QrcodeSupportedFormats.QR_CODE
+                    ]
+                };
+
+                this.html5QrcodeScanner.start(
+                    cameraConfig, 
+                    config, 
+                    html5QrCodeMethod,
+                    (errorMessage) => {}
+                ).then(() => {
+                    const readerVideo = document.querySelector('#reader video');
+                    if (readerVideo) {
+                        readerVideo.style.objectFit = 'cover';
+                        readerVideo.style.borderRadius = '1rem';
+                    }
+                }).catch(err => {
+                    console.error("Camera start failed", err);
+                    alert("Camera access denied or failed. Please ensure you have granted camera permissions for this site.");
+                    this.stopScanner();
                 });
             },
 
             stopScanner() {
                 this.isScanning = false;
                 if (this.html5QrcodeScanner) {
-                    this.html5QrcodeScanner.stop().then(() => {
-                        this.html5QrcodeScanner.clear();
-                        this.html5QrcodeScanner = null;
-                        document.getElementById('reader').innerHTML = ''; // Ensure canvas is cleared
-                    }).catch((err) => {
-                        console.log("Failed to stop scanner", err);
-                        // Force clear if fails
+                    try {
+                        this.html5QrcodeScanner.stop().then(() => {
+                            this.html5QrcodeScanner.clear();
+                            this.html5QrcodeScanner = null;
+                            document.getElementById('reader').innerHTML = ''; 
+                        }).catch((err) => {
+                            this.html5QrcodeScanner = null;
+                            document.getElementById('reader').innerHTML = ''; 
+                        });
+                    } catch(e) {
                         this.html5QrcodeScanner = null;
                         document.getElementById('reader').innerHTML = '';
-                    });
+                    }
+                } else {
+                    document.getElementById('reader').innerHTML = '';
                 }
             },
 

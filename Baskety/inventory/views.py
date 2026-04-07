@@ -14,6 +14,29 @@ class InventoryDashboardView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     context_object_name = 'products'
     # paginate_by = 50
 
+    # def get_queryset(self):
+    #     queryset = Product.objects.all().select_related('category')
+    #     category = self.request.GET.get('category')
+    #     status = self.request.GET.get('status')
+    #     q = self.request.GET.get('q')
+
+    #     if category:
+    #         queryset = queryset.filter(category_id=category)
+        
+    #     if q:
+    #         queryset = queryset.filter(name__icontains=q)
+
+    #     if status == 'critical':
+    #         queryset = queryset.filter(current_stock__lte=F('reorder_level'), current_stock__gt=0)
+    #     elif status == 'low':
+    #         queryset = queryset.filter(current_stock__gt=F('reorder_level'), current_stock__lte=F('reorder_level') + 50)
+    #     elif status == 'out':
+    #         queryset = queryset.filter(current_stock__lte=0)
+    #     elif status == 'in':
+    #         queryset = queryset.filter(current_stock__gt=F('reorder_level') + 50)
+
+    #     return queryset.order_by('name')
+
     def get_queryset(self):
         queryset = Product.objects.all().select_related('category')
         category = self.request.GET.get('category')
@@ -24,16 +47,13 @@ class InventoryDashboardView(LoginRequiredMixin, RoleRequiredMixin, ListView):
             queryset = queryset.filter(category_id=category)
         
         if q:
-            queryset = queryset.filter(name__icontains=q)
+            # CHANGED: Added Q object to search both name AND sku
+            from django.db.models import Q
+            queryset = queryset.filter(Q(name__icontains=q) | Q(sku__icontains=q))
 
         if status == 'critical':
             queryset = queryset.filter(current_stock__lte=F('reorder_level'), current_stock__gt=0)
-        elif status == 'low':
-            queryset = queryset.filter(current_stock__gt=F('reorder_level'), current_stock__lte=F('reorder_level') + 50)
-        elif status == 'out':
-            queryset = queryset.filter(current_stock__lte=0)
-        elif status == 'in':
-            queryset = queryset.filter(current_stock__gt=F('reorder_level') + 50)
+        # ... rest of status logic ...
 
         return queryset.order_by('name')
 

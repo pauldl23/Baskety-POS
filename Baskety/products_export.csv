@@ -1,0 +1,155 @@
+SKU,Name,Category,Selling Price,Current Stock
+BEV-001,Coca Cola 1.5L,Beverages,65.00,40
+4800016115011,Mang Juan Chik'n Skin 17g,Snacks,15.00,16
+DAI-001,Full Cream Milk 1L,Dairy,120.00,37
+PRO-001,Red Apples (kg),Fresh Produce,130.00,36
+CAN-001,Argentina Corned Beef 150g,Canned Goods,45.00,15
+BEV-002,Vitamilk Double Choco 300mL,Beverages,40.00,21
+SNK-002,Goya Milk Chocolate 40g,Snacks,25.00,6
+DAI-002,Kraft Cheddar Cheese Block,Dairy,6.50,41
+PRO-002,Bananas (kg),Fresh Produce,110.00,20
+CAN-002,Century Tuna Hot & Spicy 155g,Canned Goods,45.00,10
+BEV-003,Sprite Zero Can 320ml,Soft Drinks,42.00,11
+BEV-004,Royal True Orange 1.5L,Soft Drinks,80.00,35
+BEV-005,Pepsi Zero Can 320mL,Soft Drinks,40.00,46
+BEV-006,Mountain Dew 1.5L,Soft Drinks,60.00,24
+BEV-007,C2 Green Tea Apple 1L,Juices,35.00,33
+BEV-008,Zest-O Strawberry 200ml,Juices,15.00,49
+BEV-009,Minute Maid Orange 1L,Juices,50.00,9
+BEV-010,Del Monte Pineapple Juice 1L,Juices,85.00,9
+BEV-011,Tropicana Juice Drink 1L,Juices,70.00,5
+BEV-012,Nature's Spring Distilled Water 500ml,Water,10.00,10
+BEV-013,Summit Drinking Water 500mL,Water,15.00,45
+BEV-014,Absolute Distilled Drinking Water 350ml,Water,15.00,4
+BEV-015,Nescafe 3-in-1 Original 28g,Coffee & Tea,8.00,46
+BEV-016,Great Taste White Coffee 30g,Coffee & Tea,9.00,41
+BEV-017,Kopiko Brown Coffee 30g,Coffee & Tea,8.50,9
+BEV-018,Milo Chocolate Drink Powder 300g,Milk Drinks,165.00,46
+BEV-019,Bear Brand Powdered Milk Drink 300g,Milk Drinks,185.00,10
+BEV-020,Birch Tree Powdered Milk 150g,Milk Drinks,95.00,16
+BEV-021,Alaska Powdered Milk 300g,Milk Drinks,175.00,35
+BEV-022,Red Bull Energy Drink 150mL,Energy Drinks,45.00,50
+BEV-023,Sting Energy Drink 320ml,Energy Drinks,25.00,9
+BEV-024,Cobra Energy Drink 350ml,Energy Drinks,28.00,49
+BEV-025,San Miguel Beer Can 330mL,Alcohol,65.00,37
+BEV-026,Red Horse Beer Can 330mL,Alcohol,65.00,6
+BEV-027,San Miguel Beer Light Can 330ml,Alcohol,65.00,47
+BEV-028,Emperador Light Brandy 350ml,Alcohol,85.00,20
+BEV-029,Tanduay Light 375mL,Alcohol,85.00,29
+CAN-003,Ligo Sardines Red 155g,Canned Fish,20.00,47
+CAN-004,Mega Sardines Green 155g,Canned Fish,16.00,43
+CAN-005,Argentina Beef Loaf 170g,Canned Meat,30.00,2
+CAN-006,Purefoods Corned Beef 150g,Canned Meat,103.00,14
+CAN-007,CDO Liver Spread 85g,Canned Meat,22.00,23
+CAN-008,Reno Liver Spread 85g,Canned Meat,36.00,6
+CAN-009,SPAM Less Sodium 12oz,Canned Meat,255.00,16
+CAN-010,Ma Ling Luncheon Meat 340g,Canned Meat,95.00,48
+CAN-011,Argentina Vienna Sausage 260g,Canned Meat,65.00,35
+CAN-012,CDO Meat Loaf 150g,Canned Meat,35.00,39
+CAN-013,Del Monte Fruit Cocktail 432g,Canned Fruits,85.00,18
+CAN-014,Dole Pineapple Chunks 227g,Canned Fruits,55.00,42
+CAN-015,Del Monte Whole Kernel Corn 432g,Canned Vegetables,65.00,28
+CAN-016,Hunt's Pork & Beans 230g,Canned Vegetables,32.00,13
+CAN-017,Jolly Mushroom Pieces & Stems 198g,Canned Vegetables,45.00,34
+CAN-018,Del Monte Tomato Sauce 250g,Jams & Spreads,29.00,37
+INS-001,Lucky Me Pancit Canton Original,Instant Noodles,15.00,19
+4807770270291,Lucky Me Pancit Canton Chilimansi,Instant Noodles,25.00,16
+4807770270017,Lucky Me Instant Mami Beef,Instant Soup,15.00,30
+4807770270024,Lucky Me Instant Mami Chicken,Instant Soup,15.00,8
+INS-005,Nissin Cup Noodles Beef,Cup Noodles,25.00,16
+INS-006,Payless Pancit Canton 125g,Instant Noodles,25.00,34
+INS-007,Nissin Yakisoba,Instant Noodles,35.00,15
+INS-008,Korean Samyang Hot Chicken,Instant Noodles,65.00,30
+INS-009,Knorr Noodle Soup Chicken,Instant Soup,10.00,50
+INS-010,Maggi Magic Sarap 8g,Seasoning Mixes,3.00,16
+INS-011,Knorr Chicken Cube 10g,Seasoning Mixes,5.00,7
+INS-012,Knorr Sinigang sa Sampaloc Mix,Seasoning Mixes,8.00,24
+INS-013,Mama Sita's Caldereta Mix,Seasoning Mixes,15.00,33
+SNK-003,Nova Multigrain Snack 78g,Chips,18.00,48
+SNK-004,Oishi Prawn Crackers 24g,Chips,10.00,6
+SNK-005,Roller Coaster Cheddar & Cheese 24g,Chips,10.00,14
+SNK-006,V-Cut Spicy Barbecue 25g,Chips,20.00,7
+SNK-007,Clover Chips Cheese 85g,Chips,25.00,24
+SNK-008,Lay's Classic 85g,Chips,45.00,23
+SNK-009,Pringles Cheese 42g,Chips,50.00,17
+SNK-010,Jack 'n Jill Potato Chips,Chips,22.00,14
+SNK-011,Pillows Chocolate 38g,Candies & Chocolates,12.00,46
+SNK-012,Rebisco Crackers 10s,Biscuits & Crackers,70.00,27
+750515018402,SkyFlakes Crackers,Biscuits & Crackers,10.00,23
+SNK-014,Fita Crackers 10s,Biscuits & Crackers,70.00,5
+SNK-015,Cream-O Cookies 10s,Biscuits & Crackers,85.00,40
+SNK-016,Oreo Cookies 12s,Biscuits & Crackers,90.00,6
+SNK-017,Choco Mucho 33g,Candies & Chocolates,12.00,34
+SNK-018,Flat Tops Chocolate 24s,Candies & Chocolates,35.00,46
+SNK-019,Cadbury Dairy Milk 65g,Candies & Chocolates,65.00,28
+SNK-020,Goya Milk Chocolate 40g,Candies & Chocolates,25.00,6
+GRN-001,Sinandomeng Rice 1kg,Rice,55.00,36
+GRN-002,Jasmine Rice 1kg,Rice,60.00,17
+GRN-003,Dinorado Rice 1kg,Rice,65.00,34
+GRN-004,Brown Rice 1kg,Rice,75.00,10
+GRN-005,Del Monte Spaghetti Pasta 900g,Pasta,85.00,11
+GRN-006,Royal Pasta Elbow Macaroni 1kg,Pasta,135.00,5
+GRN-007,Quaker Oats 400g,Cereals & Oats,87.00,46
+CND-001,Silver Swan Soy Sauce 200mL,Soy Sauce & Fish Sauce,15.00,42
+CND-002,Datu Puti Soy Sauce 385ml,Soy Sauce & Fish Sauce,26.00,31
+CND-003,UFC Banana Ketchup 320g,Ketchup,35.00,8
+CND-004,Del Monte Tomato Ketchup 320g,Ketchup,45.00,38
+CND-005,Lady's Choice Mayonnaise 220ml,Ketchup,55.00,13
+CND-006,Datu Puti Vinegar 385ml,Vinegar,18.00,12
+CND-007,Silver Swan Vinegar 200mL,Vinegar,15.00,20
+CND-008,Mama Sita's Oyster Sauce 405g,Soy Sauce & Fish Sauce,55.00,29
+CND-009,Golden Fiesta Palm Oil 485mL,Cooking Oil,76.00,50
+CND-010,Minola Premium Corn Oil 1L,Cooking Oil,125.00,26
+CND-011,Baguio Cooking Oil 1L,Cooking Oil,95.00,34
+CND-012,Ajinomoto Umami Seasoning 11g,Seasoning Mixes,25.00,4
+CND-013,McCormick Black Pepper 35g,Salt & Sugar,45.00,27
+CND-014,Iodized Salt 1kg,Salt & Sugar,20.00,21
+CND-015,White Sugar 1kg,Salt & Sugar,60.00,30
+CND-016,Brown Sugar 1kg,Salt & Sugar,65.00,32
+CND-017,Pillsbury All-Purpose Flour 80oz,Flour,302.00,49
+DAI-003,Alaska Evaporada 140mL,Cream,25.00,29
+DAI-004,Alaska Condensada 300ml,Cream,48.00,37
+DAI-005,Eden Cheese 165g,Cheese,75.00,36
+DAI-006,Eden Cheese 45g,Cheese,22.00,33
+DAI-007,Anchor Butter 227g,Butter & Margarine,150.00,33
+DAI-008,Star Margarine 100g,Butter & Margarine,40.00,43
+DAI-009,Bear Brand Milk 200mL,Milk,35.00,6
+DAI-010,Selecta Magnum Almond,Ice Cream,75.00,7
+PER-001,Safeguard Pure White Bar 115g,Bath Soap,58.00,29
+PER-002,Dove Beauty Bar 135g,Bath Soap,55.00,10
+PER-003,Palmolive Naturals Bar Light Blue 55g,Bath Soap,110.00,39
+PER-004,Lifebuoy Bar Soap 80g,Bath Soap,15.00,5
+PER-005,Sunsilk Shampoo Pink 15mL,Shampoo,10.00,16
+PER-006,Palmolive Shampoo Pink 15mL,Shampoo,10.00,11
+PER-007,Head & Shoulders Shampoo 180ml,Shampoo,95.00,32
+PER-008,Cream Silk Conditioner 180ml,Shampoo,75.00,33
+PER-009,Colgate Total Toothpaste 150g,Toothpaste,95.00,50
+PER-010,Close-Up Toothpaste 160g,Toothpaste,65.00,7
+PER-011,Colgate Toothbrush Medium,Toothpaste,20.00,25
+PER-012,Milcu Roll-On Deodorant 50mL,Deodorant,100.00,40
+PER-013,Nivea Pearl & Beauty Deodorant Roll,Deodorant,92.00,20
+PER-014,Charmee Sanitary Napkin Wings 8+1,Feminine Care,24.00,21
+PER-015,Modess All Night Wings 4's,Feminine Care,62.00,18
+PER-016,Kotex Luxe Wings 16s,Feminine Care,96.00,48
+PER-017,EQ Baby Diaper Small 4s,Baby Care,350.00,12
+PER-018,Ginger Ale 335mL,Beverages,58.00,27
+PER-019,Johnson's Baby Powder 50g,Baby Care,35.00,7
+PER-020,Human Nature Sunflower Oil 100mL,Skincare,185.00,42
+HSE-001,Calla Powder Floral Fresh 45g,Detergent,10.00,50
+HSE-002,Ariel Powder Detergent 110g,Detergent,22.00,48
+HSE-003,Champion Detergent Bar 130g,Detergent,10.00,29
+HSE-004,Surf Powder Cherry Blossom 65g,Detergent,10.00,10
+HSE-005,Downy Fabric Softener 375ml,Fabric Softener,85.00,24
+HSE-006,Smart Dishwashing Green 200g,Dishwashing,30.00,6
+HSE-007,Smart Dishwashing Yellow 200g,Dishwashing,30.00,14
+HSE-008,Zonrox Bleach Original 250mL,Cleaners,20.00,45
+HSE-009,Domex Toilet Bowl Cleaner 500ml,Cleaners,125.00,46
+HSE-010,Zonrox Bleach ColorSafe 225mL,Cleaners,35.00,28
+HSE-011,Starwax Floor Wax 90g,Cleaners,25.00,42
+HSE-012,Glade Air Freshener 300ml,Air Fresheners,125.00,14
+HSE-013,Scotch Brite Sponge Mini,Dishwashing,30.00,36
+HSE-014,Glad Trash Bag Large 10s,Trash Bags,65.00,6
+HSE-015,Bounty Paper Towel 2 Rolls,Tissue,95.00,30
+PRO-2223,Buldak Cream Carbo 140g,Instant Noodles,105.00,18
+123,Orange,Fruits,20.00,10
+731126104081,Nagaraya 80g,Snacks,30.00,19

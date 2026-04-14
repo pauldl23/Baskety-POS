@@ -30,3 +30,22 @@ else:
     user.save()
     print(f'Superuser {username} updated successfully')
 "
+
+# Load initial data if database is empty (no products)
+python -c "
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'baskety_core.settings')
+import django
+django.setup()
+from products.models import Product
+from django.core.management import call_command
+if Product.objects.count() == 0:
+    print('Empty database detected. Loading initial data...')
+    try:
+        call_command('loaddata', 'initial_data.json')
+        print('Initial data loaded successfully')
+    except Exception as e:
+        print(f'Error loading initial data: {e}')
+else:
+    print('Database already contains data. Skipping initial load.')
+"

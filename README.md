@@ -1,4 +1,4 @@
-# Baskety
+# Baskety-POS
 
 Welcome to **Baskety**, a comprehensive mini mart grocery store inventory configuration and point-of-sale (POS) management system! This Django-based application is designed to streamline product tracking, manage grocery stock, and facilitate fast sales transactions efficiently.
 
